@@ -47,7 +47,6 @@
         <!-- ==================== BAGIAN 1: KELAS BIMBINGAN LIVE ==================== -->
         <div class="section-title">👨‍🏫 Kelas Live & Mentoring (Rp35.000)</div>
         <div class="grid-paket">
-            <!-- FIX: Langsung masuk ke folder trial/paketX/ tanpa nama folder lain -->
             <a href="trial/paket1/" class="btn-paket bimbingan"><strong>Paket 1</strong><span class="btn-desc">Mental & Motivasi</span></a>
             <a href="trial/paket2/" class="btn-paket bimbingan"><strong>Paket 2</strong><span class="btn-desc">Tips Trik Buku</span></a>
             <a href="trial/paket3/" class="btn-paket bimbingan"><strong>Paket 3</strong><span class="btn-desc">Bimbingan Mentor</span></a>
@@ -56,7 +55,6 @@
         <!-- ==================== BAGIAN 2: SIMULASI GRATIS ==================== -->
         <div class="section-title">✨ Akses Simulasi Gratis (Trial)</div>
         <div class="grid-paket">
-            <!-- FIX: Langsung masuk ke folder trial/paketX/ tanpa nama folder lain -->
             <a href="trial/paket4/" class="btn-paket gratis">Paket 4 <span class="btn-desc">Free Akses</span></a>
             <a href="trial/paket5/" class="btn-paket gratis">Paket 5 <span class="btn-desc">Free Akses</span></a>
             <a href="trial/paket6/" class="btn-paket gratis">Paket 6 <span class="btn-desc">Free Akses</span></a>
@@ -72,13 +70,10 @@
         <div class="section-title">🔒 Paket Premium (Rp12.000 / Akses Penuh Paket 13-40)</div>
         <div class="grid-paket">
             <script>
-                const targetWA = "6282307760731";
-                const pesanBeli = encodeURIComponent("*Halo Kak Febri*, saya berminat membeli *Akses Premium Paket Simulasi 13-40* seharga Rp12.000.");
-                
-                // Berjalan mulus langsung melempar ke chat WA tanpa membuka folder
+                // PERBAIKAN: Tombol sekarang mengarah masuk ke folder internal lokal seperti kemauan Anda
                 for (let i = 13; i <= 40; i++) {
                     document.write(`
-                        <a href="https://wa.me{targetWA}?text=${pesanBeli}" target="_blank" class="btn-paket premium">
+                        <a href="trial/paket${i}/" class="btn-paket premium">
                             🔒 Paket ${i}
                             <span class="btn-desc" style="color: #ef4444;">Premium</span>
                         </a>
