@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANG PNS - Simulasi CAT SKD CPNS (Paket 6)</title>
+    <!-- Tailwind CSS v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 font-sans">
+
+    <!-- HALAMAN LOGIN / REGISTRASI PESERTA -->
+    <div id="halaman-login" class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+            <div class="text-center mb-6">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">SANG PNS - PAKET SOAL 6</span>
+                <h2 class="text-2xl font-bold text-blue-900 mt-2">Simulasi CAT SKD CPNS</h2>
+                <p class="text-gray-500 text-sm mt-1">Uji mental, kecepatan, dan akurasi ala BKN</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="input-nama" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Contoh: Febri Delise">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nomor Peserta / NIK</label>
+                    <input type="text" id="input-nomor" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Contoh: 610012345678">
+                </div>
+                <button onclick="mulaiUjianApp()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition shadow-md">
+                    Mulai Ujian Paket 6
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HALAMAN UTAMA UJIAN -->
+    <div id="halaman-ujian" class="hidden">
+        <header class="bg-blue-900 text-white p-4 shadow-md flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-bold">CAT BKN - Seleksi Kompetensi Dasar (SKD)</h1>
+                <p id="info-peserta" class="text-xs text-blue-200"></p>
+            </div>
+            <div id="timer" class="bg-red-600 px-4 py-2 rounded-lg font-mono font-bold text-lg shadow-inner">
+                10:00
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+            <!-- Bagian Soal (Kiri - 3 Kolom) -->
+            <div class="md:col-span-3 bg-white p-6 rounded-xl shadow-md flex flex-col justify-between min-h-[480px]">
+                <div>
+                    <div class="flex justify-between items-center border-b pb-3 mb-4">
+                        <span id="nomor-soal" class="font-bold text-lg text-blue-900">Soal No. 1</span>
+                        <span id="kategori-soal" class="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold">TWK / TIU / TKP</span>
+                    </div>
+                    <p id="teks-soal" class="text-gray-800 text-lg mb-6 leading-relaxed">
+                        Pertanyaan soal akan dimuat di sini...
+                    </p>
+
+                    <!-- Pilihan Jawaban (A-E) -->
+                    <div id="options-container" class="space-y-3">
+                        <!-- Digenerate dinamis -->
+                    </div>
+                </div>
+
+                <!-- Navigasi Bawah Soal -->
+                <div class="flex justify-between mt-8 pt-4 border-t">
+                    <button onclick="prevSoal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2 rounded-lg font-semibold transition">Sebelumnya</button>
+                    <button onclick="nextSoal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">Selanjutnya</button>
+                </div>
+            </div>
+
+            <!-- Navigasi Nomor Soal (Kanan - 1 Kolom) -->
+            <div class="bg-white p-4 rounded-xl shadow-md h-fit max-h-[520px] flex flex-col">
+                <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Navigasi Soal</h3>
+                <div id="nav-grid" class="grid grid-cols-5 gap-2 mb-6 overflow-y-auto p-1 max-h-[320px]"></div>
+                <div class="text-xs space-y-1 mb-4 text-gray-600 border-t pt-2">
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-600 inline-block rounded"></span> Sudah dijawab</div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 bg-gray-200 border inline-block rounded"></span> Belum dijawab</div>
+                </div>
+                <button onclick="konfirmasiSelesai()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold shadow transition">
+                    Selesai Ujian
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- HALAMAN HASIL UJIAN -->
+    <div id="halaman-hasil" class="hidden flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center">
+            <h2 class="text-2xl font-bold text-blue-900 mb-1">Hasil Simulasi Ujian</h2>
+            <p class="text-gray-500 text-sm mb-6">Laporan Evaluasi Kecepatan & Akurasi CAT BKN</p>
+            
+            <div class="bg-slate-50 p-4 rounded-xl text-left mb-6 space-y-2 border">
+                <p><strong>Nama Peserta:</strong> <span id="res-nama"></span></p>
+                <p><strong>Nomor Peserta:</strong> <span id="res-nomor"></span></p>
+                <hr>
+                <p><strong>Total Skor Akhir:</strong> <span id="res-skor" class="text-2xl font-extrabold text-blue-600"></span></p>
+                <p><strong>Waktu Terpakai:</strong> <span id="res-waktu" class="font-semibold text-gray-700"></span></p>
+                <p class="pt-2"><strong>Status Evaluasi Tier:</strong><br><span id="res-status" class="text-base block mt-1"></span></p>
+            </div>
+
+            <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded-lg transition shadow">
+                Ulangi Simulasi (Menu Utama)
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIKA APLIKASI & PAKET SOAL 6 -->
+    <script>
+        const daftarSoal = [
+            { 
+                id: 1, 
+                kategori: "TWK - Sejarah Pergerakan Kebangsaan", 
+                soal: "Organisasi pergerakan nasional pertama di Indonesia yang berdiri pada tanggal 20 Mei 1908 dan menjadi tonggak awal kebangkitan nasional adalah...", 
+                opsi: ["Sarekat Islam", "Budi Utomo", "Indische Partij", "Perhimpunan Indonesia", "Trikoro Darmo"], 
+                kunci: 1 
+            },
+            { 
+                id: 2, 
+                kategori: "TWK - UUD 1945", 
+                soal: "Berdasarkan Pasal 1 ayat (2) UUD NRI Tahun 1945 setelah amandemen, kedaulatan berada di tangan rakyat dan dilaksanakan menurut...", 
+                opsi: ["Undang-Undang Dasar", "Keputusan Presiden", "Kebijakan MPR", "Pancasila secara mutlak", "Peraturan Pemerintah"], 
+                kunci: 0 
+            },
+            { 
+                id: 3, 
+                kategori: "TIU - Silogisme", 
+                soal: "Semua inovator memiliki wawasan luas. Sebagian pemikir kreatif adalah inovator. Kesimpulan yang valid adalah...", 
+                opsi: ["Semua pemikir kreatif memiliki wawasan luas.", "Sebagian pemikir kreatif memiliki wawasan luas.", "Tidak ada pemikir kreatif yang berwawasan luas.", "Semua yang berwawasan luas adalah pemikir kreatif.", "Sebagian pemikir kreatif bukan inovator."], 
+                kunci: 1 
+            },
+            { 
+                id: 4, 
+                kategori: "TIU - Hitung Cepat / Aritmatika", 
+                soal: "Berapakah nilai dari hasil operasi hitung berikut: (15% dari 200) + (0,5 x 40) - 10 = ...", 
+                opsi: ["20", "25", "30", "35", "40"], 
+                kunci: 2 
+            },
+            { 
+                id: 5, 
+                kategori: "TIU - Deret Angka", 
+                soal: "Carilah angka lanjutan dari pola barisan berikut: 2, 3, 5, 8, 13, 21, ...", 
+                opsi: ["29", "31", "34", "38", "42"], 
+                kunci: 2 
+            },
+            { 
+                id: 6, 
+                kategori: "TIU - Logika Analitik Posisi", 
+                soal: "Dalam tes lari jarak pendek, kecepatan Dodi lebih tinggi daripada Feri. Kecepatan Gilang sama dengan Dodi, sedangkan kecepatan Beni lebih rendah daripada Feri. Siapakah yang menduduki urutan tercepat kedua?", 
+                opsi: ["Dodi dan Gilang", "Feri", "Beni", "Dodi saja", "Feri dan Beni"], 
+                kunci: 0 
+            },
+            { 
+                id: 7, 
+                kategori: "TKP - Pelayanan Publik", 
+                soal: "Seorang warga datang ke kantor kelurahan dengan marah karena dokumen perizinan usahanya mengalami keterlambatan penerbitan dari jadwal semula. Sikap Anda sebagai pelayan publik adalah...", 
+                opsi: ["Meminta warga tersebut tenang, mendengarkan keluhannya dengan empati, mengecek kendala berkasnya, dan memberikan solusi kepastian waktu penyelesaian.", "Menyuruhnya pulang dan datang kembali minggu depan tanpa penjelasan.", "Menyalahkan bagian arsip lain atas keterlambatan tersebut.", "Mengabaikannya sampai ia berhenti marah sendiri.", "Meminta satpam untuk menenangkan atau mengeluarkan warga tersebut."], 
+                bobot: [5, 1, 2, 1, 1] 
+            },
+            { 
+                id: 8, 
+                kategori: "TKP - Jejaring Kerja & Kolaborasi", 
+                soal: "Dalam sebuah tim kerja lintas bidang, salah satu anggota menunjukkan sikap pasif dan selalu menolak diberi tanggung jawab tambahan karena merasa beban kerjanya sudah berat. Sikap Anda sebagai rekan satu tim adalah...", 
+                opsi: ["Membiarkannya karena itu bukan urusan pribadi Anda.", "Melaporkan kinerjanya langsung kepada kepala dinas tanpa berdiskusi.", "Mengajaknya berdiskusi secara kekeluargaan, mendengarkan kendalanya, serta menawarkan bantuan dan membagi tugas secara adil.", "Mengambil seluruh tugasnya agar Anda dipuji atasan.", "Menyindir kinerjanya di depan rekan-rekan lain saat rapat."], 
+                bobot: [1, 1, 5, 2, 1] 
+            },
+            { 
+                id: 9, 
+                kategori: "TKP - Profesionalisme & Integritas", 
+                soal: "Menjelang sore hari di instansi tempat Anda bekerja, seorang rekan menawarkan jalan pintas untuk memanipulasi laporan keuangan kegiatan agar sisa anggaran bisa dibagi bersama. Sikap Anda adalah...", 
+                opsi: ["Menerima tawaran tersebut demi tambahan pemasukan pribadi.", "Menolak dengan tegas, mengingatkan pentingnya integritas, dan tetap menyusun laporan sesuai data riil yang dapat dipertanggungjawabkan.", "Diam saja dan pura-pura tidak tahu dengan apa yang mereka lakukan.", "Ikut menyetujui asalkan tidak ditulis namanya dalam dokumen laporan.", "Melaporkan rekan tersebut ke media sosial secara anonim."], 
+                bobot: [1, 5, 2, 1, 1] 
+            },
+            { 
+                id: 10, 
+                kategori: "TKP - Adaptabilitas Perubahan", 
+                soal: "Pimpinan instansi memutuskan untuk mengubah total alur kerja birokrasi manual ke sistem digital terintegrasi cloud secara mendadak mulai minggu ini. Respons pertama Anda menghadapi kebijakan ini adalah...", 
+                opsi: ["Protes dan menolak menggunakan sistem baru karena sudah terbiasa dengan kertas.", "Mempelajari fitur digital tersebut secara aktif, beradaptasi dengan cepat, serta membantu rekan lain yang kesulitan.", "Menyerahkan semua pekerjaan digital Anda kepada staf magang.", "Menggunakan sistem baru hanya ketika diawasi langsung oleh atasan.", "Mengeluh di ruang istirahat kantor mengenai kebijakan yang merepotkan."], 
+                bobot: [1, 5, 1, 2, 1] 
+            }
+        ];
+
+        let peserta = { nama: "", nomor: "" };
+        let currentIndex = 0;
+        let jawabanUser = {}; 
+        
+        let totalWaktuAlokasi = 600; // Total 10 menit (600 detik)
+        let waktuSisa = 600; 
+        let intervalTimer;
+
+        function mulaiUjianApp() {
+            const nama = document.getElementById('input-nama').value.trim();
+            const nomor = document.getElementById('input-nomor').value.trim();
+
+            if (!nama || !nomor) {
+                alert("Mohon isi Nama Lengkap dan Nomor Peserta terlebih dahulu!");
+                return;
+            }
+
+            peserta.nama = nama;
+            peserta.nomor = nomor;
+
+            document.getElementById('info-peserta').innerText = `${nama} (${nomor})`;
+            document.getElementById('halaman-login').classList.add('hidden');
+            document.getElementById('halaman-ujian').classList.remove('hidden');
+
+            loadSoal();
+            mulaiTimer();
+        }
+
+        function mulaiTimer() {
+            const timerDisplay = document.getElementById('timer');
+            
+            intervalTimer = setInterval(() => {
+                let menit = Math.floor(waktuSisa / 60);
+                let detik = waktuSisa % 60;
+
+                timerDisplay.innerText = 
+                    (menit < 10 ? "0" + menit : menit) + ":" + 
+                    (detik < 10 ? "0" + detik : detik);
+
+                if (waktuSisa <= 0) {
+                    clearInterval(intervalTimer);
+                    alert("Waktu ujian telah habis!");
+                    selesaiUjian();
+                } else {
+                    waktuSisa--;
+                }
+            }, 1000);
+        }
+
+        function initNavigasi() {
+            const navGrid = document.getElementById('nav-grid');
+            navGrid.innerHTML = '';
+            daftarSoal.forEach((item, index) => {
+                let btn = document.createElement('button');
+                btn.innerText = index + 1;
+                let isTerisi = jawabanUser[index] !== undefined;
+                btn.className = `p-2 rounded-lg font-bold text-sm border transition ${
+                    isTerisi 
+                    ? 'bg-blue-600 text-white border-blue-600' 
+                    : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
+                }`;
+                btn.onclick = () => {
+                    currentIndex = index;
+                    loadSoal();
+                };
+                navGrid.appendChild(btn);
+            });
+        }
+
+        function loadSoal() {
+            const soal = daftarSoal[currentIndex];
+            document.getElementById('nomor-soal').innerText = `Soal No. ${currentIndex + 1} dari ${daftarSoal.length}`;
+            document.getElementById('kategori-soal').innerText = soal.kategori;
+            document.getElementById('teks-soal').innerText = soal.soal;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            soal.opsi.forEach((opsiText, i) => {
+                let isChecked = jawabanUser[currentIndex] === i ? 'checked' : '';
+                let div = document.createElement('label');
+                div.className = `flex items-center p-3 border rounded-lg cursor-pointer transition ${isChecked ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'}`;
+                div.innerHTML = `
+                    <input type="radio" name="jawaban" value="${i}" ${isChecked} onclick="pilihJawaban(${i})" class="mr-3 text-blue-600 h-4 w-4">
+                    <span class="text-gray-700 font-medium">${String.fromCharCode(65 + i)}. ${opsiText}</span>
+                `;
+                optionsContainer.appendChild(div);
+            });
+            initNavigasi();
+        }
+
+        function pilihJawaban(i) {
+            jawabanUser[currentIndex] = i;
+            initNavigasi();
+        }
+
+        function nextSoal() {
+            if (currentIndex < daftarSoal.length - 1) {
+                currentIndex++;
+                loadSoal();
+            }
+        }
+
+        function prevSoal() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadSoal();
+            }
+        }
+
+        function konfirmasiSelesai() {
+            let jumlahTerisi = Object.keys(jawabanUser).length;
+            let jumlahKosong = daftarSoal.length - jumlahTerisi;
+
+            let konfirm = confirm(`Konfirmasi Selesai Ujian:\n- Soal Terjawab: ${jumlahTerisi}\n- Belum Terjawab: ${jumlahKosong}\n\nYakin akhiri sesi sekarang?`);
+            if (konfirm) {
+                clearInterval(intervalTimer);
+                selesaiUjian();
+            }
+        }
+
+        function selesaiUjian() {
+            let detikTerpakai = totalWaktuAlokasi - waktuSisa;
+            let menitRil = Math.floor(detikTerpakai / 60);
+            let detikRil = detikTerpakai % 60;
+            let formatWaktuRil = `${menitRil} menit ${detikRil} detik`;
+
+            let totalSkor = 0;
+            daftarSoal.forEach((item, index) => {
+                let ans = jawabanUser[index];
+                if (ans !== undefined) {
+                    if (item.bobot) {
+                        totalSkor += item.bobot[ans];
+                    } else {
+                        if (ans === item.kunci) {
+                            totalSkor += 5;
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('halaman-ujian').classList.add('hidden');
+            document.getElementById('halaman-hasil').classList.remove('hidden');
+
+            document.getElementById('res-nama').innerText = peserta.nama;
+            document.getElementById('res-nomor').innerText = peserta.nomor;
+            document.getElementById('res-skor').innerText = totalSkor;
+            document.getElementById('res-waktu').innerText = formatWaktuRil;
+
+            let statusEl = document.getElementById('res-status');
+
+            // Logika Korelasi Ketat Waktu & Akurasi Skor
+            if (detikTerpakai <= 300 && totalSkor >= 35) {
+                statusEl.innerHTML = "<span class='font-bold text-green-600'>Tier 3 (Master SANG PNS - Elite Level)</span><br><span class='text-xs text-gray-600'>Luar biasa! Selesai kilat dan akurasi tinggi. Kursi NIP tahun ini di tanganmu!</span>";
+            } else if (detikTerpakai <= 420 || totalSkor >= 25) {
+                statusEl.innerHTML = "<span class='font-bold text-yellow-600'>Tier 2 (Pejuang Tangguh - Intermediate)</span><br><span class='text-xs text-gray-600'>Cukup terkendali, tapi asah lagi ketepatan atau kecepatanmu agar tembus level elite.</span>";
+            } else {
+                statusEl.innerHTML = "<span class='font-bold text-red-600'>Tier 1 (Mahasiswa Abadi - Beginner)</span><br><span class='text-xs text-gray-600'>Skor terlalu kecil atau waktu pengerjaan terlalu lambat. Perbanyak latihan lagi!</span>";
+            }
+        }
+    </script>
+</body>
+</html>
