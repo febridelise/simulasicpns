@@ -47,25 +47,25 @@
         <!-- ==================== BAGIAN 1: KELAS BIMBINGAN LIVE ==================== -->
         <div class="section-title">👨‍🏫 Kelas Live & Mentoring (Rp35.000)</div>
         <div class="grid-paket">
-            <!-- Jalur diarahkan langsung ke folder angka 1, 2, 3 -->
-            <a href="./trial/paket1/" class="btn-paket bimbingan"><strong>Paket 1</strong><span class="btn-desc">Mental & Motivasi</span></a>
-            <a href="trial/2/" class="btn-paket bimbingan"><strong>Paket 2</strong><span class="btn-desc">Tips Trik Buku</span></a>
-            <a href="trial/3/" class="btn-paket bimbingan"><strong>Paket 3</strong><span class="btn-desc">Bimbingan Mentor</span></a>
+            <!-- FIX: Langsung masuk ke folder trial/paketX/ tanpa nama folder lain -->
+            <a href="trial/paket1/" class="btn-paket bimbingan"><strong>Paket 1</strong><span class="btn-desc">Mental & Motivasi</span></a>
+            <a href="trial/paket2/" class="btn-paket bimbingan"><strong>Paket 2</strong><span class="btn-desc">Tips Trik Buku</span></a>
+            <a href="trial/paket3/" class="btn-paket bimbingan"><strong>Paket 3</strong><span class="btn-desc">Bimbingan Mentor</span></a>
         </div>
 
         <!-- ==================== BAGIAN 2: SIMULASI GRATIS ==================== -->
         <div class="section-title">✨ Akses Simulasi Gratis (Trial)</div>
         <div class="grid-paket">
-            <!-- Jalur diarahkan langsung ke folder angka 4 s.d 12 -->
-            <a href="./trial/paket4/" class="btn-paket gratis">Paket 4 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/5/" class="btn-paket gratis">Paket 5 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/6/" class="btn-paket gratis">Paket 6 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/7/" class="btn-paket gratis">Paket 7 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/8/" class="btn-paket gratis">Paket 8 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/9/" class="btn-paket gratis">Paket 9 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/10/" class="btn-paket gratis">Paket 10 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/11/" class="btn-paket gratis">Paket 11 <span class="btn-desc">Free Akses</span></a>
-            <a href="trial/12/" class="btn-paket gratis">Paket 12 <span class="btn-desc">Free Akses</span></a>
+            <!-- FIX: Langsung masuk ke folder trial/paketX/ tanpa nama folder lain -->
+            <a href="trial/paket4/" class="btn-paket gratis">Paket 4 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket5/" class="btn-paket gratis">Paket 5 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket6/" class="btn-paket gratis">Paket 6 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket7/" class="btn-paket gratis">Paket 7 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket8/" class="btn-paket gratis">Paket 8 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket9/" class="btn-paket gratis">Paket 9 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket10/" class="btn-paket gratis">Paket 10 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket11/" class="btn-paket gratis">Paket 11 <span class="btn-desc">Free Akses</span></a>
+            <a href="trial/paket12/" class="btn-paket gratis">Paket 12 <span class="btn-desc">Free Akses</span></a>
         </div>
 
         <!-- ==================== BAGIAN 3: SIMULASI PREMIUM ==================== -->
@@ -75,7 +75,7 @@
                 const targetWA = "6282307760731";
                 const pesanBeli = encodeURIComponent("*Halo Kak Febri*, saya berminat membeli *Akses Premium Paket Simulasi 13-40* seharga Rp12.000.");
                 
-                // Tetap langsung melempar ke chat WA saat di-klik dari menu utama
+                // Berjalan mulus langsung melempar ke chat WA tanpa membuka folder
                 for (let i = 13; i <= 40; i++) {
                     document.write(`
                         <a href="https://wa.me{targetWA}?text=${pesanBeli}" target="_blank" class="btn-paket premium">
